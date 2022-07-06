@@ -57,7 +57,12 @@ export default class Identity {
      * @returns identity commitment
      */
     public generateCommitment(): bigint {
-        return poseidon([poseidon([this._nullifier, this._trapdoor])])
+        const identity_poseidon: bigint = poseidon([this._nullifier, this._trapdoor])
+        const sha_commitment = sha256(identity_poseidon.toString(16))
+
+        return BigNumber.from(sha_commitment).toBigInt()
+
+        // return poseidon([poseidon([this._nullifier, this._trapdoor])])
     }
 
     /**

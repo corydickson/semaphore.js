@@ -32,11 +32,14 @@ describe("Proof", () => {
             fs.mkdirSync(snarkArtifactsPath)
         }
 
+        /*
+
         if (!fs.existsSync(`${snarkArtifactsPath}/semaphore.zkey`)) {
             await download(`${snarkArtifactsUrl}/semaphore.wasm`, snarkArtifactsPath)
             await download(`${snarkArtifactsUrl}/semaphore.zkey`, snarkArtifactsPath)
             await download(`${snarkArtifactsUrl}/semaphore.json`, snarkArtifactsPath)
         }
+        */
     }, 10000)
 
     afterAll(async () => {
@@ -51,8 +54,8 @@ describe("Proof", () => {
 
             const fun = () =>
                 generateProof(identity, group, externalNullifier, signal, {
-                    wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                    zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+                    wasmFilePath: `${snarkArtifactsPath}/semaphore-sha.wasm`,
+                    zkeyFilePath: `${snarkArtifactsPath}/semaphore-sha.zkey`
                 })
 
             await expect(fun).rejects.toThrow("The identity is not part of the group")
@@ -74,8 +77,8 @@ describe("Proof", () => {
             group.addMembers([BigInt(1), BigInt(2), identityCommitment])
 
             fullProof = await generateProof(identity, group, externalNullifier, signal, {
-                wasmFilePath: `${snarkArtifactsPath}/semaphore.wasm`,
-                zkeyFilePath: `${snarkArtifactsPath}/semaphore.zkey`
+                wasmFilePath: `${snarkArtifactsPath}/semaphore-sha.wasm`,
+                zkeyFilePath: `${snarkArtifactsPath}/semaphore-sha.zkey`
             })
 
             expect(typeof fullProof).toBe("object")
@@ -110,7 +113,7 @@ describe("Proof", () => {
 
     describe("# verifyProof", () => {
         it("Should generate and verify a Semaphore proof", async () => {
-            const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/semaphore.json`, "utf-8"))
+            const verificationKey = JSON.parse(fs.readFileSync(`${snarkArtifactsPath}/semaphore-sha.json`, "utf-8"))
 
             const response = await verifyProof(verificationKey, fullProof)
 

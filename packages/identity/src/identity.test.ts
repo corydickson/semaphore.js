@@ -88,7 +88,7 @@ describe("Identity", () => {
             const commitment = identity.generateCommitment()
 
             expect(commitment).toBe(
-                BigInt("1720349790382552497189398984241859233944354304766757200361065203741879866188")
+                BigInt("66952275818270836500120928675012700853897197234003507210844991088934074536880")
             )
         })
     })
